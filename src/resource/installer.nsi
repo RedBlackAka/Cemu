@@ -1,7 +1,7 @@
 ; Copyright Dolphin Emulator Project / Azahar Emulator Project / Team Cemu
-; Licensed under MPL 2.0
+; Licensed under MPL 2.0 with permission from original authors
 
-; Require /DPRODUCT_VERSION=<release-name> to makensis.
+; Require /DPRODUCT_VERSION for makensis.
 !ifndef PRODUCT_VERSION
   !error "PRODUCT_VERSION must be defined"
 !endif
@@ -23,7 +23,6 @@ ShowUnInstDetails show
 ; Setup MultiUser support:
 ; If launched without ability to elevate, user will not see any extra options.
 ; If user has ability to elevate, they can choose to install system-wide, with default to CurrentUser.
-!define MULTIUSER_EXECUTIONLEVEL Highest
 !define MULTIUSER_INSTALLMODE_INSTDIR "${PRODUCT_NAME}"
 !define MULTIUSER_MUI
 !define MULTIUSER_INSTALLMODE_COMMANDLINE
@@ -86,7 +85,7 @@ Var DesktopShortcut
 ; MUI end ------
 
 !include "WinVer.nsh"
-; Declare the installer itself as win10/win11 compatible, so WinVer.nsh works correctly.
+; Declare the installer itself as windows 10/11 compatible, so WinVer.nsh works correctly.
 ManifestSupportedOS {8e0f7a12-bfb3-4fe8-b9a5-48fd50a15a9a}
 
 Function .onInit
@@ -101,11 +100,7 @@ Function un.onInit
 FunctionEnd
 
 !macro UPDATE_DISPLAYNAME
-  ${If} $MultiUser.InstallMode == "CurrentUser"
-    StrCpy $DisplayName "$(^Name) (User)"
-  ${Else}
-    StrCpy $DisplayName "$(^Name)"
-  ${EndIf}
+  StrCpy $DisplayName "$(^Name)"
 !macroend
 
 Function desktopShortcutPageCreate
@@ -180,7 +175,6 @@ Section Uninstall
   Delete "$DESKTOP\$DisplayName.lnk"
   Delete "$SMPROGRAMS\$DisplayName.lnk"
 
-  ; Be a bit careful to not delete files a user may have put into the install directory.
   Delete "$INSTDIR\Cemu.exe"
   Delete "$INSTDIR\uninst.exe"
   RMDir /r "$INSTDIR\gameProfiles"
