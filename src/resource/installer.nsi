@@ -23,6 +23,7 @@ ShowUnInstDetails show
 ; Setup MultiUser support:
 ; If launched without ability to elevate, user will not see any extra options.
 ; If user has ability to elevate, they can choose to install system-wide, with default to CurrentUser.
+!define MULTIUSER_INSTALLMODE_DEFAULT_CURRENTUSER
 !define MULTIUSER_EXECUTIONLEVEL Standard
 !define MULTIUSER_INSTALLMODE_INSTDIR "${PRODUCT_NAME}"
 !define MULTIUSER_MUI
