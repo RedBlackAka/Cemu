@@ -1,5 +1,5 @@
 ; Copyright Dolphin Emulator Project / Azahar Emulator Project / Team Cemu
-; Licensed under MPL 2.0 with permission from original authors
+; Relicensed under MPL 2.0 with permission from original authors
 
 ; Require /DPRODUCT_VERSION for makensis.
 !ifndef PRODUCT_VERSION
@@ -24,7 +24,7 @@ ShowUnInstDetails show
 ; If launched without ability to elevate, user will not see any extra options.
 ; If user has ability to elevate, they can choose to install system-wide, with default to CurrentUser.
 !define MULTIUSER_INSTALLMODE_DEFAULT_CURRENTUSER
-!define MULTIUSER_EXECUTIONLEVEL Standard
+!define MULTIUSER_EXECUTIONLEVEL user
 !define MULTIUSER_INSTALLMODE_INSTDIR "${PRODUCT_NAME}"
 !define MULTIUSER_MUI
 !define MULTIUSER_INSTALLMODE_COMMANDLINE
