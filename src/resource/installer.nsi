@@ -114,6 +114,8 @@ Section "Base"
   ; The binplaced build output will be included verbatim.
   File /r "${BINARY_SOURCE_DIR}\*"
 
+  !insertmacro UPDATE_DISPLAYNAME
+
   ; Create start menu and desktop shortcuts
   CreateShortCut "$SMPROGRAMS\$DisplayName.lnk" "$INSTDIR\Cemu.exe"
   ${If} $DesktopShortcut == 1
@@ -150,6 +152,8 @@ Section -Post
 SectionEnd
 
 Section Uninstall
+  !insertmacro UPDATE_DISPLAYNAME
+
   Delete "$DESKTOP\$DisplayName.lnk"
   Delete "$SMPROGRAMS\$DisplayName.lnk"
 
