@@ -1,5 +1,5 @@
 ; Copyright Dolphin Emulator Project / Azahar Emulator Project / Team Cemu
-; Relicensed under MPL 2.0 with permission from original authors
+; Licensed under MPL 2.0 with permission to relicense from GPLv2+
 
 ; Require /DPRODUCT_VERSION for makensis.
 !ifndef PRODUCT_VERSION
@@ -75,10 +75,6 @@ Var DesktopShortcut
 
 ; MUI end ------
 
-!include "WinVer.nsh"
-; Declare the installer itself as windows 10/11 compatible, so WinVer.nsh works correctly.
-ManifestSupportedOS {8e0f7a12-bfb3-4fe8-b9a5-48fd50a15a9a}
-
 Function .onInit
   StrCpy $DesktopShortcut 1
 
@@ -118,8 +114,6 @@ Section "Base"
   ; The binplaced build output will be included verbatim.
   File /r "${BINARY_SOURCE_DIR}\*"
 
-  !insertmacro UPDATE_DISPLAYNAME
-
   ; Create start menu and desktop shortcuts
   CreateShortCut "$SMPROGRAMS\$DisplayName.lnk" "$INSTDIR\Cemu.exe"
   ${If} $DesktopShortcut == 1
@@ -148,30 +142,28 @@ Section -Post
   IntFmt $0 "0x%08X" $0
   WriteRegDWORD SHCTX "${PRODUCT_UNINST_KEY}" "EstimatedSize" "$0"
 
-  WriteRegStr HKCR ".wud" "" "Cemu"
-  WriteRegStr HKCR ".wux" "" "Cemu"
-  WriteRegStr HKCR ".wua" "" "Cemu"
-  WriteRegStr HKCR "Cemu\DefaultIcon" "" "$INSTDIR\Cemu.exe,0"
-  WriteRegStr HKCR "Cemu\Shell\open\command" "" '"$INSTDIR\Cemu.exe" %1'
+  WriteRegStr HKCR ".wud" "" "Cemu.exe"
+  WriteRegStr HKCR ".wux" "" "Cemu.exe"
+  WriteRegStr HKCR ".wua" "" "Cemu.exe"
+  WriteRegStr HKCR "Cemu.exe\DefaultIcon" "" "$INSTDIR\Cemu.exe,0"
+  WriteRegStr HKCR "Cemu.exe\Shell\open\command" "" '"$INSTDIR\Cemu.exe" %1'
 SectionEnd
 
 Section Uninstall
-  !insertmacro UPDATE_DISPLAYNAME
-
   Delete "$DESKTOP\$DisplayName.lnk"
   Delete "$SMPROGRAMS\$DisplayName.lnk"
 
+; Be a bit careful to not delete files a user may have put into the install directory
   Delete "$INSTDIR\Cemu.exe"
   Delete "$INSTDIR\uninst.exe"
   RMDir /r "$INSTDIR\gameProfiles"
   RMDir /r "$INSTDIR\resources"
   RMDir "$INSTDIR"
 
-  ; Delete both system wide and user defined file associations.
   DeleteRegKey HKCR ".wud"
   DeleteRegKey HKCR ".wux"
   DeleteRegKey HKCR ".wua"
-  DeleteRegKey HKCR "Cemu"
+  DeleteRegKey HKCR "Cemu.exe"
   DeleteRegKey HKCU "Software\Microsoft\Windows\CurrentVersion\Explorer\FileExts\.wud"
   DeleteRegKey HKCU "Software\Microsoft\Windows\CurrentVersion\Explorer\FileExts\.wux"
   DeleteRegKey HKCU "Software\Microsoft\Windows\CurrentVersion\Explorer\FileExts\.wua"
