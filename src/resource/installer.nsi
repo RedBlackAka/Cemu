@@ -17,10 +17,9 @@
 Name "${PRODUCT_NAME}"
 OutFile "cemu-${PRODUCT_VERSION}-windows-x64-installer.exe"
 SetCompressor /SOLID lzma
+InstallDir "$LOCALAPPDATA\Cemu" 
 ShowInstDetails show
 ShowUnInstDetails show
-
-InstallDir "$LOCALAPPDATA\Cemu" 
 
 !include "MUI2.nsh"
 ; Custom page plugin
@@ -129,24 +128,24 @@ SectionEnd
 Section -Post
   WriteUninstaller "$INSTDIR\uninst.exe"
 
-  WriteRegStr SHCTX "${PRODUCT_DIR_REGKEY}" "" "$INSTDIR\Cemu.exe"
+  WriteRegStr HKCU "${PRODUCT_DIR_REGKEY}" "" "$INSTDIR\Cemu.exe"
 
   ; Write metadata for add/remove programs applet
-  WriteRegStr SHCTX "${PRODUCT_UNINST_KEY}" "DisplayName" "$DisplayName"
-  WriteRegStr SHCTX "${PRODUCT_UNINST_KEY}" "UninstallString" "$INSTDIR\uninst.exe"
-  WriteRegStr SHCTX "${PRODUCT_UNINST_KEY}" "DisplayIcon" "$INSTDIR\Cemu.exe"
-  WriteRegStr SHCTX "${PRODUCT_UNINST_KEY}" "URLInfoAbout" "${PRODUCT_WEB_SITE}"
-  WriteRegStr SHCTX "${PRODUCT_UNINST_KEY}" "Publisher" "${PRODUCT_PUBLISHER}"
-  WriteRegStr SHCTX "${PRODUCT_UNINST_KEY}" "InstallLocation" "$INSTDIR"
+  WriteRegStr HKCU "${PRODUCT_UNINST_KEY}" "DisplayName" "$DisplayName"
+  WriteRegStr HKCU "${PRODUCT_UNINST_KEY}" "UninstallString" "$INSTDIR\uninst.exe"
+  WriteRegStr HKCU "${PRODUCT_UNINST_KEY}" "DisplayIcon" "$INSTDIR\Cemu.exe"
+  WriteRegStr HKCU "${PRODUCT_UNINST_KEY}" "URLInfoAbout" "${PRODUCT_WEB_SITE}"
+  WriteRegStr HKCU "${PRODUCT_UNINST_KEY}" "Publisher" "${PRODUCT_PUBLISHER}"
+  WriteRegStr HKCU "${PRODUCT_UNINST_KEY}" "InstallLocation" "$INSTDIR"
   ${GetSize} "$INSTDIR" "/S=0K" $0 $1 $2
   IntFmt $0 "0x%08X" $0
-  WriteRegDWORD SHCTX "${PRODUCT_UNINST_KEY}" "EstimatedSize" "$0"
+  WriteRegDWORD HKCU "${PRODUCT_UNINST_KEY}" "EstimatedSize" "$0"
 
-  WriteRegStr HKCR ".wud" "" "Cemu.exe"
-  WriteRegStr HKCR ".wux" "" "Cemu.exe"
-  WriteRegStr HKCR ".wua" "" "Cemu.exe"
-  WriteRegStr HKCR "Cemu.exe\DefaultIcon" "" "$INSTDIR\Cemu.exe,0"
-  WriteRegStr HKCR "Cemu.exe\Shell\open\command" "" '"$INSTDIR\Cemu.exe" %1'
+  WriteRegStr HKCU "Software\Classes\.wud" "" "Cemu"
+  WriteRegStr HKCU "Software\Classes\.wux" "" "Cemu"
+  WriteRegStr HKCU "Software\Classes\.wua" "" "Cemu"
+  WriteRegStr HKCU "Software\Classes\Cemu\DefaultIcon" "" "$INSTDIR\Cemu.exe,0"
+  WriteRegStr HKCU "Software\Classes\Cemu\Shell\open\command" "" '"$INSTDIR\Cemu.exe" %1'
 SectionEnd
 
 Section Uninstall
@@ -162,16 +161,16 @@ Section Uninstall
   RMDir /r "$INSTDIR\resources"
   RMDir "$INSTDIR"
 
-  DeleteRegKey HKCR ".wud"
-  DeleteRegKey HKCR ".wux"
-  DeleteRegKey HKCR ".wua"
-  DeleteRegKey HKCR "Cemu.exe"
+  DeleteRegKey HKCU "Software\Classes\.wud"
+  DeleteRegKey HKCU "Software\Classes\.wux"
+  DeleteRegKey HKCU "Software\Classes\.wua"
+  DeleteRegKey HKCU "Software\Classes\Cemu"
   DeleteRegKey HKCU "Software\Microsoft\Windows\CurrentVersion\Explorer\FileExts\.wud"
   DeleteRegKey HKCU "Software\Microsoft\Windows\CurrentVersion\Explorer\FileExts\.wux"
   DeleteRegKey HKCU "Software\Microsoft\Windows\CurrentVersion\Explorer\FileExts\.wua"
 
-  DeleteRegKey SHCTX "${PRODUCT_UNINST_KEY}"
-  DeleteRegKey SHCTX "${PRODUCT_DIR_REGKEY}"
+  DeleteRegKey HKCU "${PRODUCT_UNINST_KEY}"
+  DeleteRegKey HKCU "${PRODUCT_DIR_REGKEY}"
   DeleteRegKey HKCU "Software\Classes\discord-460807638964371468"
 
   SetAutoClose true
