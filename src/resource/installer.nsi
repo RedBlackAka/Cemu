@@ -20,16 +20,7 @@ SetCompressor /SOLID lzma
 ShowInstDetails show
 ShowUnInstDetails show
 
-; Setup MultiUser support:
-; If launched without ability to elevate, user will not see any extra options.
-; If user has ability to elevate, they can choose to install system-wide, with default to CurrentUser.
-!define MULTIUSER_INSTALLMODE_DEFAULT_CURRENTUSER
-!define MULTIUSER_EXECUTIONLEVEL user
-!define MULTIUSER_INSTALLMODE_INSTDIR "${PRODUCT_NAME}"
-!define MULTIUSER_MUI
-!define MULTIUSER_INSTALLMODE_COMMANDLINE
-!define MULTIUSER_USE_PROGRAMFILES64
-!include "MultiUser.nsh"
+InstallDir "$LOCALAPPDATA\Cemu" 
 
 !include "MUI2.nsh"
 ; Custom page plugin
@@ -41,8 +32,6 @@ ShowUnInstDetails show
 
 ; License page
 !insertmacro MUI_PAGE_LICENSE "..\..\LICENSE.txt"
-; All/Current user selection page
-!insertmacro MULTIUSER_PAGE_INSTALLMODE
 ; Desktop Shortcut page
 Page custom desktopShortcutPageCreate desktopShortcutPageLeave
 ; Directory page
@@ -92,13 +81,8 @@ ManifestSupportedOS {8e0f7a12-bfb3-4fe8-b9a5-48fd50a15a9a}
 
 Function .onInit
   StrCpy $DesktopShortcut 1
-  !insertmacro MULTIUSER_INIT
 
   !insertmacro MUI_LANGDLL_DISPLAY
-FunctionEnd
-
-Function un.onInit
-  !insertmacro MULTIUSER_UNINIT
 FunctionEnd
 
 !macro UPDATE_DISPLAYNAME
@@ -155,7 +139,7 @@ Section -Post
 
   ; Write metadata for add/remove programs applet
   WriteRegStr SHCTX "${PRODUCT_UNINST_KEY}" "DisplayName" "$DisplayName"
-  WriteRegStr SHCTX "${PRODUCT_UNINST_KEY}" "UninstallString" "$INSTDIR\uninst.exe /$MultiUser.InstallMode"
+  WriteRegStr SHCTX "${PRODUCT_UNINST_KEY}" "UninstallString" "$INSTDIR\uninst.exe"
   WriteRegStr SHCTX "${PRODUCT_UNINST_KEY}" "DisplayIcon" "$INSTDIR\Cemu.exe"
   WriteRegStr SHCTX "${PRODUCT_UNINST_KEY}" "URLInfoAbout" "${PRODUCT_WEB_SITE}"
   WriteRegStr SHCTX "${PRODUCT_UNINST_KEY}" "Publisher" "${PRODUCT_PUBLISHER}"
