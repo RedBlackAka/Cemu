@@ -1,10 +1,16 @@
 ; Copyright Dolphin Emulator Project / Azahar Emulator Project / Team Cemu
 ; Licensed under MPL 2.0 with permission from authors
 
+; Usage:
+;   get the latest nsis: https://nsis.sourceforge.io/Download
+;   probably also want vscode extension: https://marketplace.visualstudio.com/items?itemName=idleberg.nsis
+
 ; Require /DPRODUCT_VERSION for makensis.
 !ifndef PRODUCT_VERSION
   !error "PRODUCT_VERSION must be defined"
 !endif
+
+ManifestDPIAware true
 
 !define PRODUCT_NAME "Cemu"
 !define PRODUCT_PUBLISHER "Team Cemu"
@@ -45,7 +51,6 @@ Page custom desktopShortcutPageCreate desktopShortcutPageLeave
 !insertmacro MUI_UNPAGE_INSTFILES
 
 ; Variables
-Var DisplayName
 Var DesktopShortcutPageDialog
 Var DesktopShortcutCheckbox
 Var DesktopShortcut
@@ -81,10 +86,6 @@ Function .onInit
   !insertmacro MUI_LANGDLL_DISPLAY
 FunctionEnd
 
-!macro UPDATE_DISPLAYNAME
-  StrCpy $DisplayName "$(^Name)"
-!macroend
-
 Function desktopShortcutPageCreate
   !insertmacro MUI_HEADER_TEXT "Create Desktop Shortcut" "Would you like to create a desktop shortcut?"
   nsDialogs::Create 1018
@@ -114,12 +115,10 @@ Section "Base"
   ; The binplaced build output will be included verbatim.
   File /r "${BINARY_SOURCE_DIR}\*"
 
-  !insertmacro UPDATE_DISPLAYNAME
-
   ; Create start menu and desktop shortcuts
-  CreateShortCut "$SMPROGRAMS\$DisplayName.lnk" "$INSTDIR\Cemu.exe"
+  CreateShortCut "$SMPROGRAMS\$(^Name).lnk" "$INSTDIR\Cemu.exe"
   ${If} $DesktopShortcut == 1
-    CreateShortCut "$DESKTOP\$DisplayName.lnk" "$INSTDIR\Cemu.exe"
+    CreateShortCut "$DESKTOP\$(^Name).lnk" "$INSTDIR\Cemu.exe"
   ${EndIf}
 SectionEnd
 
@@ -131,7 +130,7 @@ Section -Post
   WriteRegStr HKCU "${PRODUCT_DIR_REGKEY}" "" "$INSTDIR\Cemu.exe"
 
   ; Write metadata for add/remove programs applet
-  WriteRegStr HKCU "${PRODUCT_UNINST_KEY}" "DisplayName" "$DisplayName"
+  WriteRegStr HKCU "${PRODUCT_UNINST_KEY}" "DisplayName" "$(^Name)"
   WriteRegStr HKCU "${PRODUCT_UNINST_KEY}" "UninstallString" "$INSTDIR\uninst.exe"
   WriteRegStr HKCU "${PRODUCT_UNINST_KEY}" "DisplayIcon" "$INSTDIR\Cemu.exe"
   WriteRegStr HKCU "${PRODUCT_UNINST_KEY}" "URLInfoAbout" "${PRODUCT_WEB_SITE}"
@@ -149,10 +148,8 @@ Section -Post
 SectionEnd
 
 Section Uninstall
-  !insertmacro UPDATE_DISPLAYNAME
-
-  Delete "$DESKTOP\$DisplayName.lnk"
-  Delete "$SMPROGRAMS\$DisplayName.lnk"
+  Delete "$DESKTOP\$(^Name).lnk"
+  Delete "$SMPROGRAMS\$(^Name).lnk"
 
 ; Be a bit careful to not delete files a user may have put into the install directory
   Delete "$INSTDIR\Cemu.exe"
