@@ -1,5 +1,5 @@
 ; Copyright Dolphin Emulator Project / Azahar Emulator Project / Team Cemu
-; Licensed under MPL 2.0 with permission to relicense from GPLv2+
+; Licensed under MPL 2.0 with permission from authors
 
 ; Require /DPRODUCT_VERSION for makensis.
 !ifndef PRODUCT_VERSION
@@ -121,9 +121,6 @@ Section "Base"
   ${If} $DesktopShortcut == 1
     CreateShortCut "$DESKTOP\$DisplayName.lnk" "$INSTDIR\Cemu.exe"
   ${EndIf}
-
-  ; ??
-  SetOutPath "$TEMP"
 SectionEnd
 
 !include "FileFunc.nsh"
