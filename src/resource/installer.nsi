@@ -162,9 +162,6 @@ Section Uninstall
   DeleteRegKey HKCU "Software\Classes\.wux"
   DeleteRegKey HKCU "Software\Classes\.wua"
   DeleteRegKey HKCU "Software\Classes\Cemu"
-  DeleteRegKey HKCU "Software\Microsoft\Windows\CurrentVersion\Explorer\FileExts\.wud"
-  DeleteRegKey HKCU "Software\Microsoft\Windows\CurrentVersion\Explorer\FileExts\.wux"
-  DeleteRegKey HKCU "Software\Microsoft\Windows\CurrentVersion\Explorer\FileExts\.wua"
 
   DeleteRegKey HKCU "${PRODUCT_UNINST_KEY}"
   DeleteRegKey HKCU "${PRODUCT_DIR_REGKEY}"
