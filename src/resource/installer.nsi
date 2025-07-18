@@ -163,9 +163,10 @@ Section Uninstall
   DeleteRegKey HKCU "Software\Classes\.wua"
   DeleteRegKey HKCU "Software\Classes\Cemu"
 
+  DeleteRegKey HKCU "Software\Classes\discord-460807638964371468"
+
   DeleteRegKey HKCU "${PRODUCT_UNINST_KEY}"
   DeleteRegKey HKCU "${PRODUCT_DIR_REGKEY}"
-  DeleteRegKey HKCU "Software\Classes\discord-460807638964371468"
 
   SetAutoClose true
 SectionEnd
