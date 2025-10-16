@@ -592,12 +592,7 @@ bool MainWindow::FileLoad(const fs::path launchPath, wxLaunchGameEvent::INITIATE
 	#endif
 
 	if (GetConfig().disable_screensaver)
-	{
 		ScreenSaver::SetInhibit(true);
-		// TODO: disable when only the game, not Cemu, is closed (a feature not yet implemented)
-		// currently unnecessary because this will happen automatically when Cemu closes
-		// ScreenSaver::SetInhibit(false);
-	}
 
 	if (FullscreenEnabled())
 		SetFullScreen(true);
@@ -1742,6 +1737,21 @@ void MainWindow::EndEmulation()
 	CafeSystem::ShutdownTitle();
 	DestroyCanvas();
 	m_game_launched = false;
+	m_launched_game_name.clear();
+#ifdef ENABLE_DISCORD_RPC
+	if (m_discord)
+		m_discord->UpdatePresence(DiscordPresence::Idling, "");
+#endif
+	if (GetConfig().disable_screensaver)
+		ScreenSaver::SetInhibit(false);
+
+	if (m_toolWindow)
+	{
+		m_toolWindow->Close();
+		m_toolWindow = nullptr;
+	}
+	SaveSettings();
+
 	RecreateMenu();
 	CreateGameListAndStatusBar();
 	DoLayout();
