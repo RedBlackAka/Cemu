@@ -1750,6 +1750,7 @@ void MainWindow::EndEmulation()
 		m_toolWindow->Close();
 		m_toolWindow = nullptr;
 	}
+	m_timer->Stop();
 	SaveSettings();
 
 	RecreateMenu();
