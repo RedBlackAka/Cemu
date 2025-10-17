@@ -1754,7 +1754,7 @@ void MainWindow::EndEmulation()
 	if (g_renderer)
 	{
         g_renderer->Shutdown();
-        delete renderer;
+        delete g_renderer.get();
         g_renderer.release();
     }
 
