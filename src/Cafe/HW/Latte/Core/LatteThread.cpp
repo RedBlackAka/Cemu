@@ -271,7 +271,7 @@ void LatteThread_EndEmulation()
 
 void LatteThread_Exit()
 {
-	LatteThread_EndEmulation()
+	LatteThread_EndEmulation();
 
 	#if BOOST_OS_WINDOWS
 	ExitThread(0);
