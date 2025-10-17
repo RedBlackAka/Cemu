@@ -45,6 +45,8 @@
 #include "wxgui/input/HotkeySettings.h"
 #include "input/InputManager.h"
 
+#include "Cafe/HW/Latte/Core/Latte.h"
+
 #if BOOST_OS_WINDOWS
 #define exit(__c) ExitProcess(__c)
 #else
@@ -1757,6 +1759,8 @@ void MainWindow::EndEmulation()
         delete g_renderer.get();
         g_renderer.release();
     }
+
+	LatteThread_Exit();
 
 	RecreateMenu();
 	CreateGameListAndStatusBar();
