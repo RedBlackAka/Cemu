@@ -257,12 +257,13 @@ void LatteThread_EndEmulation()
     LatteSHRC_UnloadAll();
     // close disk cache
     LatteShaderCache_Close();
-	RendererOutputShader::ShutdownStatic();
 }
 
 void LatteThread_Exit()
 {
 	LatteThread_EndEmulation();
+
+	RendererOutputShader::ShutdownStatic();
 
 	// destroy renderer but make sure that g_renderer remains valid until the destructor has finished
 	if (g_renderer)
