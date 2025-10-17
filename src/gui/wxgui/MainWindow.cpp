@@ -45,7 +45,9 @@
 #include "wxgui/input/HotkeySettings.h"
 #include "input/InputManager.h"
 
-#include "Cafe/HW/Latte/Core/Latte.h"
+#include "Cafe/HW/Latte/Core/LatteShader.h" //test
+#include "Cafe/HW/Latte/Core/Latte.h" //test
+#include "Cafe/HW/Latte/Core/LatteBufferCache.h" //test
 
 #if BOOST_OS_WINDOWS
 #define exit(__c) ExitProcess(__c)
@@ -1737,7 +1739,6 @@ void MainWindow::SetFullScreen(bool state)
 void MainWindow::EndEmulation()
 {
 	CafeSystem::ShutdownTitle();
-	LatteThread_EndEmulation();
 	DestroyCanvas();
 	m_game_launched = false;
 	m_launched_game_name.clear();
@@ -1753,6 +1754,22 @@ void MainWindow::EndEmulation()
 		m_toolWindow->Close();
 		m_toolWindow = nullptr;
 	}
+
+	// clean up vertex/uniform cache
+    LatteBufferCache_UnloadAll();
+	// clean up texture cache
+	LatteTC_UnloadAllTextures();
+	// clean up runtime shader cache
+    LatteSHRC_UnloadAll();
+    // close disk cache
+    LatteShaderCache_Close();
+
+	if (g_renderer)
+	{
+        g_renderer->Shutdown();
+		delete g_renderer.get();
+        g_renderer.release();
+    }
 
 	RecreateMenu();
 	CreateGameListAndStatusBar();

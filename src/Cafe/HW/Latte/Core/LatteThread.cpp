@@ -245,7 +245,7 @@ bool Latte_GetStopSignal()
 	return !sLatteThreadRunning;
 }
 
-void LatteThread_EndEmulation()
+void LatteThread_Exit()
 {
 	if (g_renderer)
 		g_renderer->Shutdown();
@@ -257,15 +257,8 @@ void LatteThread_EndEmulation()
     LatteSHRC_UnloadAll();
     // close disk cache
     LatteShaderCache_Close();
-}
-
-void LatteThread_Exit()
-{
-	LatteThread_EndEmulation();
-
 	RendererOutputShader::ShutdownStatic();
-
-	// destroy renderer but make sure that g_renderer remains valid until the destructor has finished
+    // destroy renderer but make sure that g_renderer remains valid until the destructor has finished
 	if (g_renderer)
 	{
 		Renderer* renderer = g_renderer.get();
@@ -274,7 +267,6 @@ void LatteThread_Exit()
 	}
 	// reset GPU7 state
 	std::memset(&LatteGPUState, 0, sizeof(LatteGPUState));
-
 	#if BOOST_OS_WINDOWS
 	ExitThread(0);
 	#else

@@ -176,5 +176,4 @@ void LatteRenderTarget_updateViewport();
 void Latte_Start();
 void Latte_Stop();
 bool Latte_GetStopSignal(); // returns true if stop was requested or if in stopped state
-void LatteThread_EndEmulation();
 void LatteThread_Exit();
