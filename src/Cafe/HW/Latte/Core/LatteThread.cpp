@@ -258,7 +258,13 @@ void LatteThread_EndEmulation()
     // close disk cache
     LatteShaderCache_Close();
 	RendererOutputShader::ShutdownStatic();
-    // destroy renderer but make sure that g_renderer remains valid until the destructor has finished
+}
+
+void LatteThread_Exit()
+{
+	LatteThread_EndEmulation();
+
+	// destroy renderer but make sure that g_renderer remains valid until the destructor has finished
 	if (g_renderer)
 	{
 		Renderer* renderer = g_renderer.get();
@@ -267,11 +273,6 @@ void LatteThread_EndEmulation()
 	}
 	// reset GPU7 state
 	std::memset(&LatteGPUState, 0, sizeof(LatteGPUState));
-}
-
-void LatteThread_Exit()
-{
-	LatteThread_EndEmulation();
 
 	#if BOOST_OS_WINDOWS
 	ExitThread(0);
