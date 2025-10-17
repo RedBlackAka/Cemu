@@ -1751,6 +1751,13 @@ void MainWindow::EndEmulation()
 		m_toolWindow = nullptr;
 	}
 
+	if (g_renderer)
+	{
+        g_renderer->Shutdown();
+        delete renderer;
+        g_renderer.release();
+    }
+
 	RecreateMenu();
 	CreateGameListAndStatusBar();
 	DoLayout();
