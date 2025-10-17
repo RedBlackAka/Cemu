@@ -245,7 +245,7 @@ bool Latte_GetStopSignal()
 	return !sLatteThreadRunning;
 }
 
-void LatteThread_Exit()
+void LatteThread_EndEmulation()
 {
 	if (g_renderer)
 		g_renderer->Shutdown();
@@ -267,6 +267,12 @@ void LatteThread_Exit()
 	}
 	// reset GPU7 state
 	std::memset(&LatteGPUState, 0, sizeof(LatteGPUState));
+}
+
+void LatteThread_Exit()
+{
+	LatteThread_EndEmulation()
+
 	#if BOOST_OS_WINDOWS
 	ExitThread(0);
 	#else

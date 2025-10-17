@@ -1753,14 +1753,7 @@ void MainWindow::EndEmulation()
 		m_toolWindow = nullptr;
 	}
 
-	if (g_renderer)
-	{
-        g_renderer->Shutdown();
-        delete g_renderer.get();
-        g_renderer.release();
-    }
-
-	LatteThread_Exit();
+	LatteThread_EndEmulation();
 
 	RecreateMenu();
 	CreateGameListAndStatusBar();
