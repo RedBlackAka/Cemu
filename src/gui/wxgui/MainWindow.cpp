@@ -1737,6 +1737,7 @@ void MainWindow::SetFullScreen(bool state)
 void MainWindow::EndEmulation()
 {
 	CafeSystem::ShutdownTitle();
+	LatteThread_EndEmulation();
 	DestroyCanvas();
 	m_game_launched = false;
 	m_launched_game_name.clear();
@@ -1752,8 +1753,6 @@ void MainWindow::EndEmulation()
 		m_toolWindow->Close();
 		m_toolWindow = nullptr;
 	}
-
-	LatteThread_EndEmulation();
 
 	RecreateMenu();
 	CreateGameListAndStatusBar();
