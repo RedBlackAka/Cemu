@@ -1755,14 +1755,7 @@ void MainWindow::EndEmulation()
 		m_toolWindow = nullptr;
 	}
 
-	// clean up vertex/uniform cache
-    LatteBufferCache_UnloadAll();
-	// clean up texture cache
-	LatteTC_UnloadAllTextures();
-	// clean up runtime shader cache
-    LatteSHRC_UnloadAll();
-    // close disk cache
-    LatteShaderCache_Close();
+
 
 	if (g_renderer)
 	{
