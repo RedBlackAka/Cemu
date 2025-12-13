@@ -1790,7 +1790,7 @@ void MainWindow::EndEmulation()
 	// clean up runtime shader cache
     LatteSHRC_UnloadAll();
     // close disk cache
-    LatteShaderCache_Close();
+    //LatteShaderCache_Close();
 
 	if (g_renderer)
 	{
