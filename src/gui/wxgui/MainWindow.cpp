@@ -1776,6 +1776,7 @@ void MainWindow::EndEmulation()
 	if (GetConfig().disable_screensaver)
 		ScreenSaver::SetInhibit(false);
 
+	// destroy the memory searcher if created
 	if (m_toolWindow)
 	{
 		m_toolWindow->Close();
