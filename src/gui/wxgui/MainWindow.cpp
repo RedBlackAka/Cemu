@@ -46,7 +46,6 @@
 #include "wxgui/input/HotkeySettings.h"
 #include "input/InputManager.h"
 
-#include "Cafe/HW/Latte/Core/LatteShader.h" //test
 #include "Cafe/HW/Latte/Core/Latte.h" //test
 #include "Cafe/HW/Latte/Core/LatteBufferCache.h" //test
 
@@ -1789,8 +1788,6 @@ void MainWindow::EndEmulation()
 	LatteTC_UnloadAllTextures();
 	// clean up runtime shader cache
     LatteSHRC_UnloadAll();
-    // close disk cache
-    //LatteShaderCache_Close();
 
 	if (g_renderer)
 	{
