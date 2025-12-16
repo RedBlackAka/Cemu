@@ -48,6 +48,7 @@
 
 #include "Cafe/HW/Latte/Core/Latte.h" //test
 #include "Cafe/HW/Latte/Core/LatteBufferCache.h" //test
+#include "Cafe/HW/Latte/Core/LatteShader.h" //test
 
 #if BOOST_OS_WINDOWS
 #define exit(__c) ExitProcess(__c)
@@ -1791,7 +1792,7 @@ void MainWindow::EndEmulation()
 	LatteTC_UnloadAllTextures();
 	// clean up runtime shader cache
     LatteSHRC_UnloadAll();
-	/ close disk cache
+	// close disk cache
     LatteShaderCache_Close();
 	RendererOutputShader::ShutdownStatic();
 
