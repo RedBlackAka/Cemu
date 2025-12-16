@@ -1783,16 +1783,20 @@ void MainWindow::EndEmulation()
 		m_toolWindow = nullptr;
 	}
 
+	if (g_renderer)
+		g_renderer->Shutdown();
 	// clean up vertex/uniform cache
     LatteBufferCache_UnloadAll();
 	// clean up texture cache
 	LatteTC_UnloadAllTextures();
 	// clean up runtime shader cache
     LatteSHRC_UnloadAll();
+	/ close disk cache
+    LatteShaderCache_Close();
+	RendererOutputShader::ShutdownStatic();
 
 	if (g_renderer)
 	{
-        g_renderer->Shutdown();
 		delete g_renderer.get();
         g_renderer.release();
     }
