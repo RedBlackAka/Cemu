@@ -1113,7 +1113,9 @@ void LatteDecompiler_analyze(LatteDecompilerShaderContext* shaderContext, LatteD
 		shaderContext->output->resourceMappingVK.setIndex = 2;
 	LatteDecompiler::_initTextureBindingPointsGL(shaderContext);
 	LatteDecompiler::_initTextureBindingPointsVK(shaderContext);
+#if ENABLE_METAL
 	LatteDecompiler::_initTextureBindingPointsMTL(shaderContext);
+#endif
 	LatteDecompiler::_initUniformBindingPoints(shaderContext);
 	LatteDecompiler::_initAttributeBindingPoints(shaderContext);
 	shaderContext->output->resourceMappingMTL.verticesPerInstanceBinding = shaderContext->currentBufferBindingPointMTL++;
